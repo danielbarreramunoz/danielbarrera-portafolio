@@ -1,3 +1,5 @@
+import BackToTop from "./components/BackToTop";
+
 type TechBadge = string;
 
 interface Project {
@@ -122,8 +124,8 @@ function SectionHeading({
 export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950 font-sans text-slate-200 antialiased">
-      {/* Header / Barra de Navegación */}
-      <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur">
+      {/* Header / Barra de Navegación (estático en móvil, fijo desde sm) */}
+      <header className="z-50 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur sm:sticky sm:top-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-4 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-4">
             <div
@@ -143,7 +145,7 @@ export default function Home() {
               </div>
               <div className="mt-1.5 flex items-center gap-2 text-xs text-slate-400">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                  <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-emerald-400 opacity-60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                 </span>
                 <span>
@@ -191,7 +193,7 @@ export default function Home() {
         {/* Sección Hero & Perfil Técnico */}
         <section
           id="perfil"
-          className="relative overflow-hidden border-b border-slate-800/80"
+          className="relative scroll-mt-28 overflow-hidden border-b border-slate-800/80"
         >
           <div
             aria-hidden="true"
@@ -216,16 +218,16 @@ export default function Home() {
                 procesos. Diseño sistemas modulares, orientados a eventos y
                 observables, listos para escalar en la nube.
               </p>
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
                   href="#proyectos"
-                  className="rounded-xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-950 transition-colors hover:bg-indigo-400"
+                  className="rounded-xl bg-indigo-500 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-950 transition-colors hover:bg-indigo-400 w-full sm:w-auto"
                 >
                   Ver proyectos Fase 2
                 </a>
                 <a
                   href="#competencias"
-                  className="rounded-xl border border-slate-700 bg-slate-900/60 px-5 py-3 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800"
+                  className="rounded-xl border border-slate-700 bg-slate-900/60 px-5 py-3 text-center text-sm font-semibold text-slate-200 transition-colors hover:border-slate-600 hover:bg-slate-800 w-full sm:w-auto"
                 >
                   Enfoque de desarrollo
                 </a>
@@ -295,7 +297,7 @@ export default function Home() {
         </section>
 
         {/* Sección Fase 2: Proyectos */}
-        <section id="proyectos" className="mx-auto max-w-6xl px-6 py-14 sm:px-8 sm:py-20">
+        <section id="proyectos" className="mx-auto max-w-6xl scroll-mt-28 px-6 py-14 sm:px-8 sm:py-20">
           <SectionHeading
             kicker="Fase 2 · Arquitectura & Backend"
             title="Proyectos de Arquitectura & Backend"
@@ -372,7 +374,7 @@ export default function Home() {
         {/* Sección Competencias & Enfoque */}
         <section
           id="competencias"
-          className="border-y border-slate-800/80 bg-slate-900/30"
+          className="scroll-mt-28 border-y border-slate-800/80 bg-slate-900/30"
         >
           <div className="mx-auto max-w-6xl px-6 py-14 sm:px-8 sm:py-20">
             <SectionHeading
@@ -462,7 +464,7 @@ export default function Home() {
       {/* Footer */}
       <footer
         id="contacto"
-        className="mx-auto max-w-6xl px-6 py-10 sm:px-8"
+        className="mx-auto max-w-6xl scroll-mt-28 px-6 py-10 sm:px-8"
       >
         <div className="flex flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -470,7 +472,7 @@ export default function Home() {
             <p className="text-sm text-indigo-300">Senior Full Stack Developer</p>
             <p className="mt-2 flex items-center gap-2 text-xs text-slate-400">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
               Desplegado en Cloudflare Pages · danielbarrera.pages.dev
@@ -478,18 +480,26 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-3 text-sm">
             <a
-              href="https://danielbarrera.pages.dev"
+              href="https://www.linkedin.com/in/danielbarreram/"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-xl bg-indigo-500 px-4 py-2.5 font-semibold text-white shadow-md shadow-indigo-950 transition-colors hover:bg-indigo-400"
             >
-              danielbarrera.pages.dev ↗
+              LinkedIn ↗
             </a>
             <a
-              href="#perfil"
+              href="https://github.com/danielbarreramunoz"
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-2.5 font-semibold text-slate-300 transition-colors hover:border-slate-500 hover:text-slate-100"
             >
-              Volver arriba ↑
+              GitHub ↗
+            </a>
+            <a
+              href="mailto:dbarrera.ap@gmail.com"
+              className="rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-2.5 font-semibold text-slate-300 transition-colors hover:border-slate-500 hover:text-slate-100"
+            >
+              Email ✉
             </a>
           </div>
         </div>
@@ -497,6 +507,7 @@ export default function Home() {
           © 2026 Daniel Barrera · Next.js (App Router) + Tailwind CSS + TypeScript
         </p>
       </footer>
+      <BackToTop />
     </div>
   );
 }
