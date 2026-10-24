@@ -13,6 +13,9 @@ interface Project {
   statusStyle: string;
   statusDot: string;
   demoLabel: string;
+  demoUrl?: string;
+  backendUrl?: string;
+  frontendUrl?: string;
 }
 
 const coreStack: TechBadge[] = [
@@ -52,7 +55,9 @@ const projects: Project[] = [
     statusStyle:
       "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
     statusDot: "bg-emerald-400",
-    demoLabel: "Slot reservado: demo + código",
+    demoLabel: "Código disponible en GitHub",
+    backendUrl: "https://github.com/danielbarreramunoz/nexus-rbac-backend",
+    frontendUrl: "https://github.com/danielbarreramunoz/nexus-rbac-front",
   },
   {
     number: "02",
@@ -358,12 +363,39 @@ export default function Home() {
                     {project.demoLabel}
                   </p>
                   <div className="mt-3 flex gap-2">
-                    <span className="flex-1 cursor-pointer rounded-lg bg-slate-800/80 px-3 py-2 text-center text-xs font-semibold text-slate-400 transition-colors group-hover:bg-slate-800 group-hover:text-slate-200">
-                      Demo →
-                    </span>
-                    <span className="flex-1 cursor-pointer rounded-lg border border-slate-700 px-3 py-2 text-center text-xs font-semibold text-slate-400 transition-colors group-hover:border-indigo-400/40 group-hover:text-indigo-200">
-                      Código →
-                    </span>
+                    {project.backendUrl || project.frontendUrl ? (
+                      <>
+                        {project.backendUrl && (
+                          <a
+                            href={project.backendUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 rounded-lg bg-slate-800/80 px-3 py-2 text-center text-xs font-semibold text-slate-200 transition-colors hover:bg-slate-700 hover:text-white"
+                          >
+                            Backend →
+                          </a>
+                        )}
+                        {project.frontendUrl && (
+                          <a
+                            href={project.frontendUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 rounded-lg border border-slate-700 px-3 py-2 text-center text-xs font-semibold text-slate-300 transition-colors hover:border-indigo-400/40 hover:text-indigo-200"
+                          >
+                            Frontend →
+                          </a>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="flex-1 cursor-pointer rounded-lg bg-slate-800/80 px-3 py-2 text-center text-xs font-semibold text-slate-400 transition-colors group-hover:bg-slate-800 group-hover:text-slate-200">
+                          Demo →
+                        </span>
+                        <span className="flex-1 cursor-pointer rounded-lg border border-slate-700 px-3 py-2 text-center text-xs font-semibold text-slate-400 transition-colors group-hover:border-indigo-400/40 group-hover:text-indigo-200">
+                          Código →
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
               </article>

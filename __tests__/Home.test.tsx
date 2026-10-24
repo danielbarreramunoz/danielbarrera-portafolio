@@ -243,28 +243,50 @@ describe("Home — Page", () => {
   // ─── Slots Demo / Código ──────────────────────────────────────────
 
   describe("Slots demo / código", () => {
-    it("renderiza el label de slot reservado en cada tarjeta", () => {
+    it("renderiza el label de código disponible en el proyecto 01", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByText("Código disponible en GitHub")
+      ).toBeInTheDocument();
+    });
+
+    it("renderiza el label de slot reservado en las tarjetas 02 y 03", () => {
       render(<Home />);
 
       const labels = screen.getAllByText("Slot reservado: demo + código");
-      expect(labels.length).toBe(3);
+      expect(labels.length).toBe(2);
     });
 
-    it("renderiza los placeholders Demo → y Código → en cada tarjeta", () => {
+    it("el proyecto 01 enlaza a los repos Backend y Frontend en GitHub", () => {
+      render(<Home />);
+
+      const backend = screen.getByRole("link", { name: /backend →/i });
+      const frontend = screen.getByRole("link", { name: /frontend →/i });
+
+      expect(backend).toHaveAttribute(
+        "href",
+        "https://github.com/danielbarreramunoz/nexus-rbac-backend"
+      );
+      expect(backend).toHaveAttribute("target", "_blank");
+      expect(backend).toHaveAttribute("rel", "noopener noreferrer");
+
+      expect(frontend).toHaveAttribute(
+        "href",
+        "https://github.com/danielbarreramunoz/nexus-rbac-front"
+      );
+      expect(frontend).toHaveAttribute("target", "_blank");
+      expect(frontend).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("las tarjetas 02 y 03 mantienen placeholders Demo y Código como spans", () => {
       render(<Home />);
 
       const demos = screen.getAllByText("Demo →");
       const codigos = screen.getAllByText("Código →");
 
-      expect(demos.length).toBe(3);
-      expect(codigos.length).toBe(3);
-    });
-
-    it("los slots Demo y Código son spans, no links (sin href)", () => {
-      render(<Home />);
-
-      const demos = screen.getAllByText("Demo →");
-      const codigos = screen.getAllByText("Código →");
+      expect(demos.length).toBe(2);
+      expect(codigos.length).toBe(2);
 
       demos.forEach((demo) => {
         expect(demo.tagName).toBe("SPAN");
