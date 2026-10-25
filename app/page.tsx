@@ -1,6 +1,7 @@
+import Image from "next/image";
 import BackToTop from "./components/BackToTop";
 import ArchitectureDiagram from "./components/ArchitectureDiagram";
-import ProjectGallery from "./components/ProjectGallery";
+import ProjectGallery, { type Shot } from "./components/ProjectGallery";
 
 const coreStack: string[] = [
   "TypeScript",
@@ -36,6 +37,123 @@ const retos: string[] = [
   "Dashboard con rutas protegidas, switcher de organización, KPIs y CRUD de usuarios, roles y proyectos con tests en Vitest.",
 ];
 
+const docenciappRetos: string[] = [
+  "Aislamiento multi-tenant por escuela y usuario: contexto dinámico de colegio con RBAC granular y auditoría con timeline por entidad.",
+  "Libro de Clases digital consolidado: leccionario, calificaciones por nivel/curso/asignatura, asistencia y reportes de interrupciones.",
+  "Ficha 360° del estudiante: hoja de vida conductual y académica integrada con ficha de salud, PIE y convivencia escolar.",
+  "Interoperabilidad nacional: cliente SOAP/REST con SIGE/MINEDUC, autenticación ClaveÚnica y firmas digitales institucionales.",
+];
+
+const docenciappBackend: string[] = [
+  "NestJS 11 · 83 módulos",
+  "PostgreSQL + TypeORM",
+  "Redis",
+  "JWT · Passport SAML/OAuth",
+  "Socket.io",
+  "GCS · Vertex · Document AI",
+];
+
+const docenciappFrontend: string[] = [
+  "Next.js 16 · PWA",
+  "React 19 + Zustand",
+  "MUI 7 + Tailwind 4",
+  "~60 clientes Axios",
+  "Recharts · Leaflet",
+  "jsPDF · ExcelJS",
+];
+
+const docenciappShots: Shot[] = [
+  {
+    src: "/img/docenciapp/dashboard-libro-clases.png",
+    alt: "Libro de clases digital de DocenciApp con leccionario",
+    caption: "Libro de Clases & Leccionario",
+  },
+  {
+    src: "/img/docenciapp/ficha-360-hoja-de-vida.png",
+    alt: "Hoja de vida y ficha 360 del estudiante en DocenciApp",
+    caption: "Hoja de Vida - Ficha 360°",
+  },
+  {
+    src: "/img/docenciapp/matriz-calificaciones.png",
+    alt: "Matriz de calificaciones por nivel curso y asignatura en DocenciApp",
+    caption: "Matriz — Nivel › Curso › Asignatura",
+  },
+  {
+    src: "/img/docenciapp/reporte-calificaciones.png",
+    alt: "Reporte de calificaciones de DocenciApp",
+    caption: "Reportes — PDF/Excel",
+  },
+  {
+    src: "/img/docenciapp/reporte-consolidado.png",
+    alt: "Reporte consolidado de DocenciApp",
+    caption: "Reporte consolidado",
+  },
+];
+
+const docenciappSteps = [
+  {
+    id: "pwa",
+    title: "Next.js 16 PWA",
+    desc: "App Router ~199 rutas · offline-ready · Zustand + ~60 clientes API",
+  },
+  {
+    id: "api",
+    title: "NestJS 11 · 83 módulos",
+    desc: "RBAC dinámico con menús por rol · auditoría por entidad · Socket.io",
+  },
+  {
+    id: "datos",
+    title: "PostgreSQL + Redis",
+    desc: "TypeORM synchronize: false · GCS · SIGE/SOAP · Vertex/Document AI",
+  },
+];
+
+const nexusShots: Shot[] = [
+  {
+    src: "/img/nexus-rbac/login.png",
+    alt: "Pantalla de inicio de sesión de Nexus RBAC",
+    caption: "Login — emite JWT con tenant, roles y permisos",
+  },
+  {
+    src: "/img/nexus-rbac/panel.png",
+    alt: "Panel administrativo de Nexus RBAC con métricas",
+    caption: "Panel — KPIs y vista por organización activa",
+  },
+  {
+    src: "/img/nexus-rbac/usuarios.png",
+    alt: "Gestión de usuarios de Nexus RBAC",
+    caption: "Usuarios — CRUD scoped a tenantId",
+  },
+  {
+    src: "/img/nexus-rbac/roles.png",
+    alt: "Gestión de roles y asignación de permisos en Nexus RBAC",
+    caption: "Roles — asignación granular de permisos",
+  },
+  {
+    src: "/img/nexus-rbac/proyectos.png",
+    alt: "Gestión de proyectos de Nexus RBAC",
+    caption: "Proyectos — datos aislados por organización",
+  },
+];
+
+const nexusSteps = [
+  {
+    id: "web",
+    title: "Next.js 16.4",
+    desc: "App Router (auth) / (dashboard) · rutas protegidas · tenant-switcher",
+  },
+  {
+    id: "api",
+    title: "NestJS 12 API",
+    desc: "JwtAuthGuard → RolesGuard / PermissionsGuard · DTOs con class-validator",
+  },
+  {
+    id: "db",
+    title: "PostgreSQL + TypeORM",
+    desc: "User · Tenant · Role · Permission · Project · todo scoped a tenantId",
+  },
+];
+
 function SectionHeading({
   kicker,
   title,
@@ -69,9 +187,15 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <div
               aria-hidden="true"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-stone-900 font-mono text-sm font-bold text-[#faf9f6]"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-stone-900"
             >
-              DB
+              <Image
+                src="/logo.svg"
+                alt=""
+                width={28}
+                height={28}
+                className="h-7 w-7"
+              />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -154,7 +278,7 @@ export default function Home() {
                   href="#proyectos"
                   className="w-full rounded-xl bg-stone-900 px-5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-stone-700 sm:w-auto"
                 >
-                  Ver caso de estudio
+                  Ver proyectos
                 </a>
                 <a
                   href="https://github.com/danielbarreramunoz"
@@ -234,10 +358,119 @@ export default function Home() {
           className="mx-auto max-w-6xl scroll-mt-28 px-6 py-14 sm:px-8 sm:py-20"
         >
           <SectionHeading
-            kicker="Caso de estudio · Fullstack TypeScript"
-            title="Nexus RBAC — SaaS multi-tenant con RBAC granular"
-            description="Plataforma con organizaciones, usuarios, roles, permisos y proyectos. API NestJS + PostgreSQL con auth JWT y dashboard Next.js con rutas protegidas y switcher de organización."
+            kicker="Casos · Producción & código abierto"
+            title="Proyectos"
+            description="Dos casos reales: DocenciApp, SaaS educativo en producción para establecimientos chilenos, y Nexus RBAC, plataforma multi-tenant de código abierto."
           />
+
+          {/* DocenciApp — producción */}
+          <article className="mt-10 overflow-hidden rounded-2xl border border-stone-300 bg-white">
+            <div className="flex flex-col gap-3 border-b border-stone-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-700/30 bg-emerald-700/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-800">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                  En producción · Acceso restringido
+                </span>
+                <span className="font-mono text-[11px] text-stone-500">
+                  SaaS propietario · libro.docenciapp.cl
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs">
+                <a
+                  href="https://libro.docenciapp.cl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-stone-900 px-3 py-2 font-semibold text-white transition-colors hover:bg-stone-700"
+                >
+                  Ver sistema en producción →
+                </a>
+              </div>
+            </div>
+
+            <div className="px-6 pt-6 sm:px-8">
+              <h3 className="font-display text-xl font-bold text-stone-900">
+                DocenciApp — Gestión educativa integral
+              </h3>
+              <p className="mt-1 font-mono text-[11px] text-orange-800">
+                Senior Full Stack Developer &amp; Software Architect —
+                Liderazgo de diseño, planificación asistida por agentes e
+                implementación de módulos core (Libro de Clases, Ficha 360° de
+                Estudiantes, Asistencia y Auditoría).
+              </p>
+              <p className="mt-3 text-sm leading-6 text-stone-600">
+                Plataforma SaaS multi-tenant para la gestión pedagógica,
+                administrativa, operativa y fiscal de establecimientos
+                educacionales chilenos. Backend modular en NestJS y frontend PWA
+                en Next.js.
+              </p>
+              <p className="mt-3 rounded-xl border border-dashed border-stone-300 bg-[#faf9f6] p-4 font-mono text-[11px] leading-5 text-stone-500">
+                Sistema propietario en producción comercial. Datos,
+                establecimientos y estudiantes de las capturas anonimizados
+                (Ley 19.628 / GDPR, NDA). Sin repo público.
+              </p>
+            </div>
+
+            <div className="grid gap-8 px-6 py-6 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
+              <div>
+                <h4 className="font-display text-lg font-bold text-stone-900">
+                  Desafíos técnicos resueltos
+                </h4>
+                <ul className="mt-4 space-y-3">
+                  {docenciappRetos.map((reto) => (
+                    <li
+                      key={reto}
+                      className="flex items-start gap-2 text-sm leading-6 text-stone-700"
+                    >
+                      <span aria-hidden="true" className="mt-0.5 text-orange-800">
+                        ▸
+                      </span>
+                      {reto}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+                      Backend
+                    </p>
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {docenciappBackend.map((item) => (
+                        <li
+                          key={item}
+                          className="rounded-md border border-stone-200 bg-[#faf9f6] px-2 py-1 font-mono text-[11px] text-stone-700"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+                      Frontend
+                    </p>
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {docenciappFrontend.map((item) => (
+                        <li
+                          key={item}
+                          className="rounded-md border border-stone-200 bg-[#faf9f6] px-2 py-1 font-mono text-[11px] text-stone-700"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <ProjectGallery project="DocenciApp" shots={docenciappShots} />
+                <ArchitectureDiagram
+                  project="DocenciApp"
+                  steps={docenciappSteps}
+                  footnote="Contexto school-user por petición · ClaveÚnica + firmas digitales · Excel/PDF generados en servidor"
+                />
+              </div>
+            </div>
+          </article>
 
           <article className="mt-10 overflow-hidden rounded-2xl border border-stone-300 bg-white">
             <div className="flex flex-col gap-3 border-b border-stone-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
@@ -268,6 +501,17 @@ export default function Home() {
                   Código Frontend →
                 </a>
               </div>
+            </div>
+
+            <div className="px-6 pt-6 sm:px-8">
+              <h3 className="font-display text-xl font-bold text-stone-900">
+                Nexus RBAC — SaaS multi-tenant con RBAC granular
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-stone-600">
+                Plataforma con organizaciones, usuarios, roles, permisos y
+                proyectos. API NestJS + PostgreSQL con auth JWT y dashboard
+                Next.js con rutas protegidas y switcher de organización.
+              </p>
             </div>
 
             <div className="grid gap-8 px-6 py-6 sm:px-8 lg:grid-cols-[1fr_1.1fr]">
@@ -327,8 +571,16 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col gap-4">
-                <ProjectGallery />
-                <ArchitectureDiagram />
+                <ProjectGallery
+                  project="Nexus RBAC"
+                  shots={nexusShots}
+                  defaultIndex={1}
+                />
+                <ArchitectureDiagram
+                  project="Nexus RBAC"
+                  steps={nexusSteps}
+                  footnote="POST /auth/login → JWT (userId, tenantId, roles, permissions) · cada recurso valida tenantId · frontend guarda sesión en auth-context"
+                />
               </div>
             </div>
           </article>
@@ -467,7 +719,7 @@ export default function Home() {
           </div>
         </div>
         <p className="mt-6 text-center font-mono text-xs text-stone-400">
-          © 2026 Daniel Barrera · Next.js + TypeScript · Nexus RBAC
+          © 2026 Daniel Barrera · Next.js + TypeScript · DocenciApp + Nexus RBAC
         </p>
       </footer>
       <BackToTop />

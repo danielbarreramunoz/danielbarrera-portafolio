@@ -1,25 +1,23 @@
-const steps = [
-  {
-    id: "web",
-    title: "Next.js 16.4",
-    desc: "App Router (auth) / (dashboard) · rutas protegidas · tenant-switcher",
-  },
-  {
-    id: "api",
-    title: "NestJS 12 API",
-    desc: "JwtAuthGuard → RolesGuard / PermissionsGuard · DTOs con class-validator",
-  },
-  {
-    id: "db",
-    title: "PostgreSQL + TypeORM",
-    desc: "User · Tenant · Role · Permission · Project · todo scoped a tenantId",
-  },
-];
+interface DiagramStep {
+  id: string;
+  title: string;
+  desc: string;
+}
 
-export default function ArchitectureDiagram() {
+interface ArchitectureDiagramProps {
+  project: string;
+  steps: DiagramStep[];
+  footnote: string;
+}
+
+export default function ArchitectureDiagram({
+  project,
+  steps,
+  footnote,
+}: ArchitectureDiagramProps) {
   return (
     <figure
-      aria-label="Diagrama de arquitectura de Nexus RBAC"
+      aria-label={`Diagrama de arquitectura de ${project}`}
       className="rounded-2xl border border-stone-300 bg-white p-5 sm:p-6"
     >
       <figcaption className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-500">
@@ -48,8 +46,7 @@ export default function ArchitectureDiagram() {
         ))}
       </ol>
       <p className="mt-4 border-t border-dashed border-stone-300 pt-3 font-mono text-[11px] leading-5 text-stone-500">
-        POST /auth/login → JWT (userId, tenantId, roles, permissions) · cada
-        recurso valida tenantId · frontend guarda sesión en auth-context
+        {footnote}
       </p>
     </figure>
   );

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="Monograma DB de Daniel Barrera">
+  <title>Monograma DB — Daniel Barrera</title>
+  <g stroke="#ffffff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="256,92 398,174 398,338 256,420 114,338 114,174"/>
+    <line x1="256" y1="92" x2="256" y2="420"/>
+    <line x1="256" y1="256" x2="114" y2="174"/>
+    <line x1="256" y1="256" x2="398" y2="174"/>
+    <path d="M170 206 C130 220 128 285 144 332 C160 368 200 384 256 384"/>
+    <path d="M340 208 C368 218 384 238 378 258 C373 274 358 272 344 266"/>
+    <line x1="256" y1="310" x2="336" y2="264"/>
+    <path d="M336 264 C380 280 382 340 336 374"/>
+    <line x1="256" y1="420" x2="336" y2="374"/>
+  </g>
+</svg>

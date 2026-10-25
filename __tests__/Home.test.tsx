@@ -40,6 +40,14 @@ describe("Home — Page", () => {
         screen.getByText(/Disponible · SaaS \/ NestJS \/ Next.js/i)
       ).toBeInTheDocument();
     });
+
+    it("usa el monograma DB como logo en el header", () => {
+      render(<Home />);
+
+      const header = screen.getByRole("banner");
+      const logo = header.querySelector('img[src="/logo.svg"]');
+      expect(logo).not.toBeNull();
+    });
   });
 
   // ─── Stack Principal ──────────────────────────────────────────────
@@ -112,7 +120,7 @@ describe("Home — Page", () => {
       render(<Home />);
 
       const ctaLink = screen.getByRole("link", {
-        name: /ver caso de estudio/i,
+        name: /ver proyectos/i,
       });
       expect(ctaLink).toHaveAttribute("href", "#proyectos");
     });
@@ -214,10 +222,95 @@ describe("Home — Page", () => {
     });
   });
 
+  // ─── DocenciApp en producción ───────────────────────────────────
+
+  describe("DocenciApp en producción", () => {
+    it("renderiza el badge de producción con acceso restringido", () => {
+      render(<Home />);
+
+      const badge = screen.getByText("En producción · Acceso restringido");
+      expect(badge).toBeInTheDocument();
+      expect(badge.className).toContain("emerald");
+    });
+
+    it("renderiza el título y el rol en el proyecto", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByText(/DocenciApp — Gestión educativa integral/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Liderazgo de diseño, planificación asistida/i)
+      ).toBeInTheDocument();
+    });
+
+    it("muestra la nota de confidencialidad sin repo público", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByText(/Ley 19\.628 \/ GDPR, NDA/i)
+      ).toBeInTheDocument();
+    });
+
+    it("renderiza los cuatro desafíos técnicos", () => {
+      render(<Home />);
+
+      const proyectosSection = document.getElementById("proyectos")!;
+      expect(
+        within(proyectosSection).getByText(
+          /Aislamiento multi-tenant por escuela y usuario/i
+        )
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText(
+          /Libro de Clases digital consolidado/i
+        )
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText(/Ficha 360° del estudiante/i)
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText(/Interoperabilidad nacional/i)
+      ).toBeInTheDocument();
+    });
+
+    it("enlaza al sistema en producción sin botones de código", () => {
+      render(<Home />);
+
+      const prodLink = screen.getByRole("link", {
+        name: /ver sistema en producción →/i,
+      });
+      expect(prodLink).toHaveAttribute("href", "https://libro.docenciapp.cl");
+      expect(prodLink).toHaveAttribute("target", "_blank");
+      expect(prodLink).toHaveAttribute("rel", "noopener noreferrer");
+
+      const proyectosSection = document.getElementById("proyectos")!;
+      const articles = within(proyectosSection).getAllByRole("article");
+      expect(articles.length).toBe(2);
+      expect(
+        within(articles[0]).queryByRole("link", { name: /código/i })
+      ).not.toBeInTheDocument();
+    });
+  });
+
   // ─── Galería y arquitectura ───────────────────────────────────────
 
   describe("Galería y arquitectura", () => {
-    it("renderiza la galería con las cinco capturas", () => {
+    it("renderiza la galería de DocenciApp con sus cinco capturas", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByAltText(
+          "Libro de clases digital de DocenciApp con leccionario"
+        )
+      ).toBeInTheDocument();
+      const tabs = screen.getByRole("tablist", {
+        name: /capturas de docenciapp/i,
+      });
+      expect(within(tabs).getAllByRole("tab").length).toBe(5);
+    });
+
+    it("renderiza la galería de Nexus RBAC con sus cinco capturas", () => {
       render(<Home />);
 
       expect(
@@ -226,16 +319,33 @@ describe("Home — Page", () => {
         )
       ).toBeInTheDocument();
       const tabs = screen.getByRole("tablist", {
-        name: /capturas del proyecto/i,
+        name: /capturas de nexus rbac/i,
       });
       expect(within(tabs).getAllByRole("tab").length).toBe(5);
     });
 
-    it("renderiza el diagrama de arquitectura en tres pasos", () => {
+    it("renderiza el diagrama de arquitectura de DocenciApp", () => {
       render(<Home />);
 
       const diagram = screen.getByRole("figure", {
-        name: /diagrama de arquitectura/i,
+        name: /diagrama de arquitectura de docenciapp/i,
+      });
+      expect(
+        within(diagram).getByText("Next.js 16 PWA")
+      ).toBeInTheDocument();
+      expect(
+        within(diagram).getByText("NestJS 11 · 83 módulos")
+      ).toBeInTheDocument();
+      expect(
+        within(diagram).getByText("PostgreSQL + Redis")
+      ).toBeInTheDocument();
+    });
+
+    it("renderiza el diagrama de arquitectura de Nexus RBAC", () => {
+      render(<Home />);
+
+      const diagram = screen.getByRole("figure", {
+        name: /diagrama de arquitectura de nexus rbac/i,
       });
       expect(within(diagram).getByText("Next.js 16.4")).toBeInTheDocument();
       expect(within(diagram).getByText("NestJS 12 API")).toBeInTheDocument();
@@ -358,7 +468,7 @@ describe("Home — Page", () => {
       render(<Home />);
 
       const ctaContainer = screen
-        .getByRole("link", { name: /ver caso de estudio/i })
+        .getByRole("link", { name: /ver proyectos/i })
         .closest("div");
 
       expect(ctaContainer).toHaveClass("flex-col");
@@ -480,6 +590,147 @@ describe("Home — Page", () => {
           "Gestión de roles y asignación de permisos en Nexus RBAC"
         )
       ).toBeInTheDocument();
+    });
+
+    it("abre la vista ampliada al pulsar la imagen principal", () => {
+      render(<Home />);
+
+      const expand = screen.getByRole("button", {
+        name: /Ampliar imagen: Libro de Clases/i,
+      });
+      fireEvent.click(expand);
+
+      expect(
+        screen.getByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).toBeInTheDocument();
+    });
+
+    it("aplica zoom con los botones Acercar y Alejar", () => {
+      render(<Home />);
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /Ampliar imagen: Libro de Clases/i,
+        })
+      );
+
+      const dialog = screen.getByRole("dialog", {
+        name: /Vista ampliada: Libro de Clases/i,
+      });
+      const img = within(dialog).getByAltText(
+        "Libro de clases digital de DocenciApp con leccionario"
+      );
+      const box = img.parentElement!;
+      expect(box.style.width).toBe("100%");
+
+      fireEvent.click(screen.getByRole("button", { name: "Acercar" }));
+      fireEvent.click(screen.getByRole("button", { name: "Acercar" }));
+      expect(box.style.width).toBe("200%");
+
+      fireEvent.click(screen.getByRole("button", { name: "Alejar" }));
+      expect(box.style.width).toBe("150%");
+    });
+
+    it("aplica zoom con la rueda del mouse", () => {
+      render(<Home />);
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /Ampliar imagen: Libro de Clases/i,
+        })
+      );
+
+      const dialog = screen.getByRole("dialog", {
+        name: /Vista ampliada: Libro de Clases/i,
+      });
+      const img = within(dialog).getByAltText(
+        "Libro de clases digital de DocenciApp con leccionario"
+      );
+      const viewer = img.parentElement!.parentElement!.parentElement!;
+      const box = img.parentElement!;
+      expect(box.style.width).toBe("100%");
+
+      fireEvent.wheel(viewer, { deltaY: -100 });
+      expect(box.style.width).toBe("150%");
+      expect(
+        within(dialog).getByText(/zoom 150%/i)
+      ).toBeInTheDocument();
+
+      fireEvent.wheel(viewer, { deltaY: 100 });
+      expect(box.style.width).toBe("100%");
+    });
+
+    it("navega entre imágenes sin cerrar la vista ampliada", () => {
+      render(<Home />);
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /Ampliar imagen: Libro de Clases/i,
+        })
+      );
+      expect(
+        screen.getByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: "Imagen siguiente" }));
+      const next = screen.getByRole("dialog", {
+        name: /Vista ampliada: Hoja de Vida/i,
+      });
+      expect(next).toBeInTheDocument();
+      expect(
+        within(next).getByAltText(
+          "Hoja de vida y ficha 360 del estudiante en DocenciApp"
+        )
+      ).toBeInTheDocument();
+
+      fireEvent.keyDown(document, { key: "ArrowLeft" });
+      expect(
+        screen.getByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).toBeInTheDocument();
+    });
+
+    it("cierra la vista ampliada con el botón Cerrar y con Escape", async () => {
+      const { default: userEvent } = await import("@testing-library/user-event");
+      const user = userEvent.setup();
+      render(<Home />);
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /Ampliar imagen: Libro de Clases/i,
+        })
+      );
+      expect(
+        screen.getByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).toBeInTheDocument();
+
+      await user.click(
+        screen.getByRole("button", { name: /Cerrar vista ampliada/i })
+      );
+      expect(
+        screen.queryByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).not.toBeInTheDocument();
+
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: /Ampliar imagen: Libro de Clases/i,
+        })
+      );
+      fireEvent.keyDown(document, { key: "Escape" });
+      expect(
+        screen.queryByRole("dialog", {
+          name: /Vista ampliada: Libro de Clases/i,
+        })
+      ).not.toBeInTheDocument();
     });
   });
 });

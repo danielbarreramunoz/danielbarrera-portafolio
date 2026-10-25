@@ -20,13 +20,13 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://danielbarrera.pages.dev"),
-  title: "Daniel Barrera — Senior Full Stack Developer",
+  title: "Daniel Barrera - Senior Full Stack Developer & Software Architect",
   description:
-    "Senior Full Stack Developer especializado en plataformas SaaS multi-tenant con NestJS, Next.js y TypeScript. Caso de estudio: Nexus RBAC con auth JWT, guards de roles y permisos, y aislamiento por tenant.",
+    "Especializado en plataformas SaaS Multi-tenant, Arquitectura Modular y Automatización con Agentes de IA.",
   openGraph: {
-    title: "Daniel Barrera — Senior Full Stack Developer",
+    title: "Daniel Barrera - Senior Full Stack Developer & Software Architect",
     description:
-      "Plataformas SaaS multi-tenant escalables en NestJS y Next.js. Caso de estudio: Nexus RBAC.",
+      "Plataformas SaaS multi-tenant escalables en NestJS y Next.js. Casos: DocenciApp en producción y Nexus RBAC.",
     type: "website",
     locale: "es_ES",
   },
