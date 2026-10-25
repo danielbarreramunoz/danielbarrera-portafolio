@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,15 +12,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://danielbarrera.pages.dev"),
   title: "Daniel Barrera — Senior Full Stack Developer",
   description:
-    "Portafolio técnico de Daniel Barrera: Next.js, NestJS, TypeScript, arquitecturas modulares, sistemas orientados a eventos y automatización con agentes IA.",
+    "Senior Full Stack Developer especializado en plataformas SaaS multi-tenant con NestJS, Next.js y TypeScript. Caso de estudio: Nexus RBAC con auth JWT, guards de roles y permisos, y aislamiento por tenant.",
   openGraph: {
     title: "Daniel Barrera — Senior Full Stack Developer",
     description:
-      "Portafolio técnico: Next.js, NestJS, TypeScript, arquitecturas modulares y automatización con agentes IA.",
+      "Plataformas SaaS multi-tenant escalables en NestJS y Next.js. Caso de estudio: Nexus RBAC.",
     type: "website",
     locale: "es_ES",
   },
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

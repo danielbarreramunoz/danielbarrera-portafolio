@@ -9,33 +9,35 @@ describe("Home — Page", () => {
     it("renderiza el badge de perfil Senior Full Stack Developer en el header", () => {
       render(<Home />);
 
-      // El texto aparece en el header (badge) y en el footer
-      const badges = screen.getAllByText("Senior Full Stack Developer");
-      expect(badges.length).toBe(2);
-    });
-
-    it("renderiza el encabezado principal con título y subtítulo", () => {
-      render(<Home />);
-
-      const heading = screen.getByRole("heading", { level: 1 });
-      expect(heading).toHaveTextContent(
-        "Ingeniería de Software, Arquitecturas Modulares"
-      );
-    });
-
-    it("renderiza el texto descriptivo del hero", () => {
-      render(<Home />);
-
+      const header = screen.getByRole("banner");
       expect(
-        screen.getByText(/Senior Full Stack Developer especializado/i)
+        within(header).getByText("Senior Full Stack Developer")
       ).toBeInTheDocument();
     });
 
-    it("renderiza el indicador de Cloudflare Pages Ready", () => {
+    it("renderiza el encabezado principal con título senior", () => {
+      render(<Home />);
+
+      const heading = screen.getByRole("heading", { level: 1 });
+      expect(heading).toHaveTextContent("Senior Full Stack Developer");
+      expect(heading).toHaveTextContent("Software Architect");
+    });
+
+    it("renderiza el texto descriptivo del hero sin jerga interna", () => {
       render(<Home />);
 
       expect(
-        screen.getByText(/Cloudflare Pages Ready/i)
+        screen.getByText(/plataformas SaaS multi-tenant/i)
+      ).toBeInTheDocument();
+      expect(screen.queryByText(/Fase 2/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Slot reservado/i)).not.toBeInTheDocument();
+    });
+
+    it("renderiza el indicador de disponibilidad", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByText(/Disponible · SaaS \/ NestJS \/ Next.js/i)
       ).toBeInTheDocument();
     });
   });
@@ -50,16 +52,15 @@ describe("Home — Page", () => {
       const stackList = within(perfilSection).getByRole("list");
 
       const expectedStack = [
-        "Next.js",
-        "NestJS",
         "TypeScript",
+        "NestJS 12",
+        "Next.js 16.4",
+        "React 19",
         "PostgreSQL",
-        "TypeORM",
+        "TypeORM 1.1",
+        "JWT + RBAC",
+        "Vitest",
         "Docker",
-        "Jest",
-        "Redis",
-        "RabbitMQ",
-        "OpenCode / MCP",
       ];
 
       expectedStack.forEach((tech) => {
@@ -92,7 +93,7 @@ describe("Home — Page", () => {
 
       const perfilLink = within(nav).getByRole("link", { name: /perfil/i });
       const proyectosLink = within(nav).getByRole("link", {
-        name: /proyectos fase 2/i,
+        name: /^proyectos$/i,
       });
       const competenciasLink = within(nav).getByRole("link", {
         name: /competencias/i,
@@ -111,18 +112,9 @@ describe("Home — Page", () => {
       render(<Home />);
 
       const ctaLink = screen.getByRole("link", {
-        name: /ver proyectos fase 2/i,
+        name: /ver caso de estudio/i,
       });
       expect(ctaLink).toHaveAttribute("href", "#proyectos");
-    });
-
-    it("renderiza el enlace CTA del hero hacia #competencias", () => {
-      render(<Home />);
-
-      const enfoqueLink = screen.getByRole("link", {
-        name: /enfoque de desarrollo/i,
-      });
-      expect(enfoqueLink).toHaveAttribute("href", "#competencias");
     });
 
     it("no renderiza enlaces redundantes de navegación interna en el footer", () => {
@@ -135,134 +127,59 @@ describe("Home — Page", () => {
     });
   });
 
-  // ─── Badges de estado de proyecto ─────────────────────────────────
+  // ─── Caso de estudio Nexus RBAC ───────────────────────────────────
 
-  describe("Badges de estado de proyecto", () => {
-    it("renderiza el badge 'Planificado / Estructura Lista' del proyecto 01", () => {
+  describe("Caso de estudio Nexus RBAC", () => {
+    it("renderiza el badge funcional honesto", () => {
       render(<Home />);
 
-      const badge = screen.getByText("Planificado / Estructura Lista");
+      const badge = screen.getByText("Funcional · Código en GitHub");
       expect(badge).toBeInTheDocument();
-    });
-
-    it("el badge 'Planificado / Estructura Lista' tiene estilos emerald", () => {
-      render(<Home />);
-
-      const badge = screen.getByText("Planificado / Estructura Lista");
-
-      // El contenedor del badge debe tener clases emerald
       expect(badge.className).toContain("emerald");
-
-      // El punto (dot) debe ser emerald
-      const dot = badge.querySelector("span > span");
-      expect(dot).not.toBeNull();
-      expect(dot!.className).toContain("bg-emerald-400");
     });
 
-    it("renderiza los badges 'Planificado' de los proyectos 02 y 03", () => {
+    it("renderiza el título del caso de estudio", () => {
       render(<Home />);
 
-      const badges = screen.getAllByText("Planificado");
-      expect(badges.length).toBe(2);
+      expect(
+        screen.getByText(/Nexus RBAC — SaaS multi-tenant con RBAC granular/i)
+      ).toBeInTheDocument();
     });
 
-    it("los badges 'Planificado' tienen estilos amber", () => {
+    it("renderiza los tres retos técnicos", () => {
       render(<Home />);
 
-      const badges = screen.getAllByText("Planificado");
-      badges.forEach((badge) => {
-        expect(badge.className).toContain("amber");
+      const proyectosSection = document.getElementById("proyectos")!;
+      expect(
+        within(proyectosSection).getByText(/Aislamiento multi-tenant estricto/i)
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText(/Autorización en dos capas/i)
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText(/Dashboard con rutas protegidas/i)
+      ).toBeInTheDocument();
+    });
 
-        const dot = badge.querySelector("span > span");
-        expect(dot).not.toBeNull();
-        expect(dot!.className).toContain("bg-amber-400");
+    it("renderiza stacks de backend y frontend", () => {
+      render(<Home />);
+
+      const proyectosSection = document.getElementById("proyectos")!;
+      expect(
+        within(proyectosSection).getByText("NestJS 12 modular")
+      ).toBeInTheDocument();
+      expect(
+        within(proyectosSection).getByText("Next.js App Router")
+      ).toBeInTheDocument();
+    });
+
+    it("enlaza a los repos Backend y Frontend en GitHub", () => {
+      render(<Home />);
+
+      const backend = screen.getByRole("link", { name: /código backend →/i });
+      const frontend = screen.getByRole("link", {
+        name: /código frontend →/i,
       });
-    });
-  });
-
-  // ─── Tarjetas de proyecto ─────────────────────────────────────────
-
-  describe("Tarjetas de proyecto", () => {
-    it("renderiza las tres tarjetas con sus títulos", () => {
-      render(<Home />);
-
-      expect(
-        screen.getByText(/Proyecto 01: SaaS Full Stack/i)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/Proyecto 02: Event-Driven Microservices/i)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/Proyecto 03: Cloud Application/i)
-      ).toBeInTheDocument();
-    });
-
-    it("renderiza el stack de cada proyecto dentro de su tarjeta", () => {
-      render(<Home />);
-
-      const proyectosSection = document.getElementById("proyectos")!;
-      const articles = within(proyectosSection).getAllByRole("article");
-
-      // Proyecto 01
-      expect(
-        within(articles[0]).getByText("Next.js (App Router)")
-      ).toBeInTheDocument();
-      expect(within(articles[0]).getByText("TypeORM")).toBeInTheDocument();
-
-      // Proyecto 02
-      expect(
-        within(articles[1]).getByText("RabbitMQ / SQS")
-      ).toBeInTheDocument();
-      expect(
-        within(articles[1]).getByText("Docker Compose")
-      ).toBeInTheDocument();
-
-      // Proyecto 03
-      expect(within(articles[2]).getByText("Serverless")).toBeInTheDocument();
-      expect(within(articles[2]).getByText("Webhooks")).toBeInTheDocument();
-    });
-
-    it("renderiza los puntos clave de cada proyecto", () => {
-      render(<Home />);
-
-      const proyectosSection = document.getElementById("proyectos")!;
-      const articles = within(proyectosSection).getAllByRole("article");
-
-      expect(
-        within(articles[0]).getByText("Arquitectura modular NestJS")
-      ).toBeInTheDocument();
-      expect(
-        within(articles[1]).getByText("Broker de eventos")
-      ).toBeInTheDocument();
-      expect(
-        within(articles[2]).getByText("Ejecución Serverless")
-      ).toBeInTheDocument();
-    });
-  });
-
-  // ─── Slots Demo / Código ──────────────────────────────────────────
-
-  describe("Slots demo / código", () => {
-    it("renderiza el label de código disponible en el proyecto 01", () => {
-      render(<Home />);
-
-      expect(
-        screen.getByText("Código disponible en GitHub")
-      ).toBeInTheDocument();
-    });
-
-    it("renderiza el label de slot reservado en las tarjetas 02 y 03", () => {
-      render(<Home />);
-
-      const labels = screen.getAllByText("Slot reservado: demo + código");
-      expect(labels.length).toBe(2);
-    });
-
-    it("el proyecto 01 enlaza a los repos Backend y Frontend en GitHub", () => {
-      render(<Home />);
-
-      const backend = screen.getByRole("link", { name: /backend →/i });
-      const frontend = screen.getByRole("link", { name: /frontend →/i });
 
       expect(backend).toHaveAttribute(
         "href",
@@ -279,24 +196,55 @@ describe("Home — Page", () => {
       expect(frontend).toHaveAttribute("rel", "noopener noreferrer");
     });
 
-    it("las tarjetas 02 y 03 mantienen placeholders Demo y Código como spans", () => {
+    it("aclara que no hay demo pública y requiere PostgreSQL local", () => {
       render(<Home />);
 
-      const demos = screen.getAllByText("Demo →");
-      const codigos = screen.getAllByText("Código →");
+      expect(
+        screen.getByText(/Sin demo pública aún/i)
+      ).toBeInTheDocument();
+    });
 
-      expect(demos.length).toBe(2);
-      expect(codigos.length).toBe(2);
+    it("no muestra proyectos fantasma ni slots", () => {
+      render(<Home />);
 
-      demos.forEach((demo) => {
-        expect(demo.tagName).toBe("SPAN");
-        expect(demo).not.toHaveAttribute("href");
+      expect(screen.queryByText(/Planificado/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Slot reservado/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Proyecto 02/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Proyecto 03/i)).not.toBeInTheDocument();
+    });
+  });
+
+  // ─── Galería y arquitectura ───────────────────────────────────────
+
+  describe("Galería y arquitectura", () => {
+    it("renderiza la galería con las cinco capturas", () => {
+      render(<Home />);
+
+      expect(
+        screen.getByAltText(
+          "Panel administrativo de Nexus RBAC con métricas"
+        )
+      ).toBeInTheDocument();
+      const tabs = screen.getByRole("tablist", {
+        name: /capturas del proyecto/i,
       });
+      expect(within(tabs).getAllByRole("tab").length).toBe(5);
+    });
 
-      codigos.forEach((codigo) => {
-        expect(codigo.tagName).toBe("SPAN");
-        expect(codigo).not.toHaveAttribute("href");
+    it("renderiza el diagrama de arquitectura en tres pasos", () => {
+      render(<Home />);
+
+      const diagram = screen.getByRole("figure", {
+        name: /diagrama de arquitectura/i,
       });
+      expect(within(diagram).getByText("Next.js 16.4")).toBeInTheDocument();
+      expect(within(diagram).getByText("NestJS 12 API")).toBeInTheDocument();
+      expect(
+        within(diagram).getByText("PostgreSQL + TypeORM")
+      ).toBeInTheDocument();
+      expect(
+        within(diagram).getByText(/POST \/auth\/login/i)
+      ).toBeInTheDocument();
     });
   });
 
@@ -307,7 +255,7 @@ describe("Home — Page", () => {
       render(<Home />);
 
       expect(
-        screen.getByText("Desarrollo Asistido por Agentes IA")
+        screen.getByText("Arquitectura modular y RBAC")
       ).toBeInTheDocument();
       expect(
         screen.getByText("Testing & Calidad de Código")
@@ -318,9 +266,9 @@ describe("Home — Page", () => {
       render(<Home />);
 
       expect(screen.getByText("Diseño modular")).toBeInTheDocument();
-      expect(screen.getByText("Agentes + TSC")).toBeInTheDocument();
+      expect(screen.getByText("Auth + tenant")).toBeInTheDocument();
       expect(screen.getByText("Tests verdes")).toBeInTheDocument();
-      expect(screen.getByText("Ship a Cloud")).toBeInTheDocument();
+      expect(screen.getByText("Ship con Docker")).toBeInTheDocument();
     });
   });
 
@@ -396,7 +344,9 @@ describe("Home — Page", () => {
     it("los indicadores de status usan motion-safe para respetar prefers-reduced-motion", () => {
       render(<Home />);
 
-      const pingElements = document.querySelectorAll(".motion-safe\\:animate-ping");
+      const pingElements = document.querySelectorAll(
+        ".motion-safe\\:animate-ping"
+      );
       expect(pingElements.length).toBeGreaterThanOrEqual(2);
 
       pingElements.forEach((el) => {
@@ -408,25 +358,11 @@ describe("Home — Page", () => {
       render(<Home />);
 
       const ctaContainer = screen
-        .getByRole("link", { name: /ver proyectos fase 2/i })
+        .getByRole("link", { name: /ver caso de estudio/i })
         .closest("div");
 
       expect(ctaContainer).toHaveClass("flex-col");
       expect(ctaContainer).toHaveClass("sm:flex-row");
-    });
-
-    it("los CTAs del hero tienen text-center para alineación responsive", () => {
-      render(<Home />);
-
-      const proyectosCta = screen.getByRole("link", {
-        name: /ver proyectos fase 2/i,
-      });
-      const competenciasCta = screen.getByRole("link", {
-        name: /enfoque de desarrollo/i,
-      });
-
-      expect(proyectosCta).toHaveClass("text-center");
-      expect(competenciasCta).toHaveClass("text-center");
     });
   });
 
@@ -445,7 +381,6 @@ describe("Home — Page", () => {
       render(<Home />);
 
       const header = screen.getByRole("banner");
-      // Extraemos las clases y verificamos que no exista "sticky" sin prefijo
       const classes = header.className.split(/\s+/);
       const hasStickyWithoutPrefix = classes.some(
         (cls) => cls === "sticky" || cls.startsWith("sticky:")
@@ -471,7 +406,6 @@ describe("Home — Page", () => {
     });
 
     it("se hace visible al hacer scroll más allá de 600px", () => {
-      // Mockear window.scrollY para simular scroll
       Object.defineProperty(window, "scrollY", {
         value: 700,
         writable: true,
@@ -509,7 +443,6 @@ describe("Home — Page", () => {
       const scrollToSpy = vi.fn();
       window.scrollTo = scrollToSpy;
 
-      // Hacer visible el botón primero simulando scroll
       Object.defineProperty(window, "scrollY", {
         value: 700,
         writable: true,
@@ -526,6 +459,27 @@ describe("Home — Page", () => {
         top: 0,
         behavior: "smooth",
       });
+    });
+  });
+
+  // ─── Galería interactiva ──────────────────────────────────────────
+
+  describe("Galería interactiva", () => {
+    it("cambia la captura principal al pulsar una miniatura", async () => {
+      const { default: userEvent } = await import("@testing-library/user-event");
+      const user = userEvent.setup();
+      render(<Home />);
+
+      const tab = screen.getByRole("tab", {
+        name: /Ver captura: Roles/i,
+      });
+      await user.click(tab);
+
+      expect(
+        screen.getByAltText(
+          "Gestión de roles y asignación de permisos en Nexus RBAC"
+        )
+      ).toBeInTheDocument();
     });
   });
 });
